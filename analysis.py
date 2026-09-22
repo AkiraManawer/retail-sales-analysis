@@ -124,7 +124,6 @@ print(
 )
 
 # Remove negative quantity
-
 negative_quantity_count = (
     (df["quantity"] < 0).sum()
 )
@@ -137,9 +136,7 @@ print(
 )
 
 # Remove duplicate transactions
-
 duplicate_count = df.duplicated().sum()
-
 df = df.drop_duplicates()
 
 print(
@@ -157,11 +154,9 @@ print(
 )
 
 rows_before_dates = len(df)
-
 df = df.dropna(subset=["date"])
 
 rows_after_dates = len(df)
-
 removed_dates = rows_before_dates - rows_after_dates
 
 print(
@@ -172,16 +167,13 @@ print(
 # Caluclate revenue
 
 df["revenue"] = df["quantity"] * df["unit_price"]
-
 print("\nRevenue calculated.")
 print(df[["quantity", "unit_price", "revenue"]].head())
 
 # Data quality repor
 
 original_rows = 600
-
 clean_rows = len(df)
-
 total_removed = original_rows - clean_rows
 
 print("\n" + "=" * 50)
@@ -213,3 +205,120 @@ print((df["quantity"] < 0).sum())
 
 print("\nFinal data preview:")
 print(df.head())
+
+###########
+# Descriptive analysis
+###########
+
+# Total Revnue
+total_revenue = df["revenue"].sum()
+print("\nTOTAL REVENUE")
+print(f"R{total_revenue:,.2f}")
+
+# Revenue by category
+category_revenue = (
+    df.groupby("category")["revenue"]
+    .sum()
+    .sort_values(ascending=False)
+)
+print("\nREVENUE BY CATEGORY")
+print(category_revenue)
+
+# Revenue by store
+store_revenue = (
+    df.groupby("store")["revenue"]
+    .sum()
+    .sort_values(ascending=False)
+)
+print("\nREVENUE BY STORE")
+print(store_revenue)
+
+best_store = store_revenue.idxmax()
+best_store_revenue = store_revenue.max()
+worst_store = store_revenue.idxmin()
+worst_store_revenue = store_revenue.min()
+
+print("\nBEST STORE")
+print(best_store)
+print(f"Revenue: R{best_store_revenue:,.2f}")
+print("\nLOWEST-REVENUE STORE")
+print(worst_store)
+print(f"Revenue: R{worst_store_revenue:,.2f}")
+
+# Best-selling product by quantity
+product_quantity = (
+    df.groupby("product_name")["quantity"]
+    .sum()
+    .sort_values(ascending=False)
+)
+top_quantity_product = product_quantity.idxmax()
+top_quantity_value = product_quantity.max()
+print("\nBEST-SELLING PRODUCT BY QUANTITY")
+print(top_quantity_product)
+print(f"Units sold: {top_quantity_value}")
+
+# Highest earning product by revenue
+product_quantity = (
+    df.groupby("product_name")["quantity"]
+    .sum()
+    .sort_values(ascending=False)
+)
+top_quantity_product = product_quantity.idxmax()
+top_quantity_value = product_quantity.max()
+print("\nBEST-SELLING PRODUCT BY QUANTITY")
+print(top_quantity_product)
+print(f"Units sold: {top_quantity_value}")
+
+# Highest earning product by revenue
+product_revenue = (
+    df.groupby("product_name")["revenue"]
+    .sum()
+    .sort_values(ascending=False)
+)
+top_revenue_product = product_revenue.idxmax()
+top_revenue_value = product_revenue.max()
+
+print("\nHIGHEST-EARNING PRODUCT BY REVENUE")
+print(top_revenue_product)
+print(f"Revenue: R{top_revenue_value:,.2f}")
+
+# MOnthly revenue
+df["month"] = df["date"].dt.to_period("M")
+monthly_revenue = (
+    df.groupby("month")["revenue"]
+    .sum()
+)
+print("\nMONTHLY REVENUE")
+print(monthly_revenue)
+
+# Average transaction value
+average_transaction_value = df["revenue"].mean()
+print("\nAVERAGE TRANSACTION VALUE")
+print(f"R{average_transaction_value:,.2f}")
+
+# Payment method
+payment_counts = (
+    df["payment_method"]
+    .value_counts()
+)
+most_common_payment = payment_counts.idxmax()
+most_common_payment_count = payment_counts.max()
+print("\nMOST COMMON PAYMENT METHOD")
+print(most_common_payment)
+print(f"Transactions: {most_common_payment_count}")
+
+# Summary
+print("\n" + "=" * 60)
+print("KEY RESULTS SUMMARY")
+print("=" * 60)
+
+print(f"Total revenue: R{total_revenue:,.2f}")
+print(f"Highest-revenue category: {category_revenue.idxmax()}")
+print(f"Best store: {best_store}")
+print(f"Lowest-revenue store: {worst_store}")
+print(f"Top product by quantity: {top_quantity_product}")
+print(f"Top product by revenue: {top_revenue_product}")
+print(f"Average transaction value: R{average_transaction_value:,.2f}")
+print(f"Most common payment method: {most_common_payment}")
+
+print("=" * 60)
