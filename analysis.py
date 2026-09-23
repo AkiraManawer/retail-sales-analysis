@@ -375,3 +375,80 @@ plt.savefig(
 )
 plt.show()
 plt.close()
+
+
+##### Question 1 #####
+plt.figure(figsize=(10, 6))
+payment_counts.plot(kind="bar")
+plt.title("Transactions by Payment Method")
+plt.xlabel("Payment Method")
+plt.ylabel("Number of Transactions")
+plt.xticks(rotation=0)
+plt.tight_layout()
+plt.savefig(
+    "charts/revenue_by_payment_method.png"
+)
+plt.show()
+plt.close()
+
+##### Question 2 #####
+category_quantity = (
+    df.groupby("category")["quantity"]
+    .sum()
+    .sort_values(ascending=False)
+)
+print("\nCATEGORY QUANTITY")
+print(category_quantity)
+
+category_average_price = (
+    df.groupby("category")["unit_price"]
+    .mean()
+    .sort_values(ascending=False)
+)
+
+print("\nAVERAGE UNIT PRICE BY CATEGORY")
+print(category_average_price)
+
+##### Question 3 #####
+category_average_price = (
+    df.groupby("category")["unit_price"]
+    .mean()
+    .sort_values(ascending=False)
+)
+print("\nAVERAGE UNIT PRICE BY CATEGORY")
+print(category_average_price)
+first_month = monthly_revenue.index[0]
+last_month = monthly_revenue.index[-1]
+
+first_month_revenue = monthly_revenue.iloc[0]
+last_month_revenue = monthly_revenue.iloc[-1]
+
+print("\nFIRST MONTH")
+print(first_month)
+print(f"Revenue: R{first_month_revenue:,.2f}")
+print("\nLAST MONTH")
+print(last_month)
+print(f"Revenue: R{last_month_revenue:,.2f}")
+
+##### Question 4 #####
+first_month = monthly_revenue.index[0]
+last_month = monthly_revenue.index[-1]
+
+first_month_revenue = monthly_revenue.iloc[0]
+last_month_revenue = monthly_revenue.iloc[-1]
+
+print("\nFIRST MONTH")
+print(first_month)
+print(f"Revenue: R{first_month_revenue:,.2f}")
+
+print("\nLAST MONTH")
+print(last_month)
+print(f"Revenue: R{last_month_revenue:,.2f}")
+store_quantity = (
+    df.groupby("store")["quantity"]
+    .sum()
+    .sort_values(ascending=False)
+)
+
+print("\nQUANTITY BY STORE")
+print(store_quantity)
