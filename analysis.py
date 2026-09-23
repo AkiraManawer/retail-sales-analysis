@@ -1,7 +1,7 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 
 # Load the data
-
 file_path = "data/sales_data.csv"
 df = pd.read_csv(file_path)
 print("Original data:")
@@ -30,14 +30,12 @@ print(df.info())
 original_rows = len(df)
 
 # Clean column names
-
 df.columns = df.columns.str.strip().str.lower()
 
 print("\nClean column names:")
 print(df.columns.tolist())
 
 # Clean text values
-
 text_columns = [
     "transaction_id",
     "product_id",
@@ -58,7 +56,6 @@ df["payment_method"] = df["payment_method"].str.title()
 print("\nText values cleaned.")
 
 # Clean dates
-
 df["date"] = pd.to_datetime(
     df["date"],
     errors="coerce"
@@ -68,7 +65,6 @@ print("\nDate column cleaned.")
 print(df["date"].head())
 
 # Clean quantity
-
 df["quantity"] = pd.to_numeric(
     df["quantity"],
     errors="coerce"
@@ -78,8 +74,7 @@ missing_quantity = df["quantity"].isna().sum()
 
 print("\nMissing quantity values:", missing_quantity)
 
-# Clean unit price
-
+# Clen unit price
 df["unit_price"] = pd.to_numeric(
     df["unit_price"],
     errors="coerce"
@@ -90,7 +85,6 @@ missing_price = df["unit_price"].isna().sum()
 print("Invalid/missing prices:", missing_price)
 
 # Remove missing quantity
-
 rows_before_quantity = len(df)
 
 df = df.dropna(subset=["quantity"])
@@ -107,7 +101,6 @@ print(
 )
 
 # Remove invalid prices
-
 rows_before_price = len(df)
 
 df = df.dropna(subset=["unit_price"])
@@ -322,3 +315,63 @@ print(f"Average transaction value: R{average_transaction_value:,.2f}")
 print(f"Most common payment method: {most_common_payment}")
 
 print("=" * 60)
+
+# Revenue chart - catgeory
+plt.figure(figsize=(10, 6))
+category_revenue.plot(kind="bar")
+plt.title("Revenue by Category")
+plt.xlabel("Category")
+plt.ylabel("Revenue (R)")
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig(
+    "charts/revenue_by_category.png"
+)
+plt.show()
+plt.close()
+
+# Revenue chart - store
+plt.figure(figsize=(10, 6))
+store_revenue.plot(kind="bar")
+plt.title("Revenue by Store")
+plt.xlabel("Store")
+plt.ylabel("Revenue (R)")
+plt.xticks(rotation=0)
+plt.tight_layout()
+plt.savefig(
+    "charts/revenue_by_store.png"
+)
+plt.show()
+plt.close()
+
+# Revenue chart - MOnthly
+plt.figure(figsize=(10, 6))
+monthly_revenue.plot(
+    kind="line",
+    marker="o"
+)
+plt.title("Monthly Revenue Trend")
+plt.xlabel("Month")
+plt.ylabel("Revenue (R)")
+plt.xticks(rotation=45)
+plt.grid(True)
+plt.tight_layout()
+plt.savefig(
+    "charts/monthly_revenue.png"
+)
+plt.show()
+plt.close()
+
+# chart - payment method
+plt.figure(figsize=(10, 6))
+payment_counts.plot(kind="bar")
+plt.title("Transactions by Payment Method")
+plt.xlabel("Payment Method")
+plt.ylabel("Number of Transactions")
+plt.xticks(rotation=0)
+plt.tight_layout()
+plt.savefig(
+    "charts/revenue_by_payment_method.png"
+)
+plt.show()
+plt.close()
